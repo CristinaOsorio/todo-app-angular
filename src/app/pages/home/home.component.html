@@ -1,0 +1,84 @@
+<section class="todoapp">
+  <header class="header">
+    <div class="container">
+      <h1>My Day</h1>
+      <p>All my tasks in one place</p>
+      <input
+        [formControl]="task"
+        class="new-todo"
+        placeholder="Type new todo"
+        autofocus
+        type="text"
+        (keydown.enter)="addTask()"
+        />
+      </div>
+    </header>
+    <div class="container todoapp-wrapper">
+      <!-- This section should be hidden by default and shown when there are todos -->
+      <section class="main">
+        <ul class="todo-list">
+          @for (task of tasksByFilter(); track task; let i = $index) {
+            <li
+              [class.completed]="task.completed"
+              [class.editing]="task.editing"
+              (dblclick)="edit(i)"
+              >
+              <div class="view">
+                <input
+                  class="toggle"
+                  type="checkbox"
+                  (change)="markCompleted(i)"
+                  [checked]="task.completed"
+                  />
+                  <label>{{ task.title }}</label>
+                  <button class="destroy" (click)="delete(i)"></button>
+                </div>
+                <input
+                  class="edit"
+                  [value]="task.title"
+                  (keydown.enter)="updateTask(i, $event)"
+                  />
+                </li>
+              }
+            </ul>
+          </section>
+          <!-- This footer should be hidden by default and shown when there are todos -->
+          @if (tasksByFilter().length > 0 || filter() !== filterType.all) {
+            <footer class="footer">
+              <!-- This should be `0 items left` by default -->
+              <span class="todo-count"
+                ><strong>{{ tasksByFilter().length }}</strong>
+                {{ tasksByFilter().length > 1 ? "items" : "item" }}</span
+                >
+                <!-- Remove this if you don't implement routing -->
+                <ul class="filters">
+                  <li>
+                    <a
+                      (click)="changeFilter(filterType.all)"
+                      [class.selected]="filter() == filterType.all"
+                      >All</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        (click)="changeFilter(filterType.pending)"
+                        [class.selected]="filter() == filterType.pending"
+                        >Pending</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          (click)="changeFilter(filterType.completed)"
+                          [class.selected]="filter() == filterType.completed"
+                          >Completed</a
+                          >
+                        </li>
+                      </ul>
+                      <!-- Hidden if no completed items are left ↓ -->
+                      <button class="clear-completed" (click)="clearCompletedTasks()">
+                        Clear completed
+                      </button>
+                    </footer>
+                  }
+                </div>
+              </section>

@@ -1,0 +1,16 @@
+<h1>Tareas</h1>
+
+<ul>
+  @for (task of tasks; track task) {
+    <li>{{ task.title }}</li>
+  }
+</ul>
+
+<ul>
+  <p>Total: {{ tasksSignal().length }}</p>
+  @for (task of tasksSignal(); track task; let i = $index) {
+    <li>
+      {{ i }} - {{ task.title }}
+    </li>
+  }
+</ul>
